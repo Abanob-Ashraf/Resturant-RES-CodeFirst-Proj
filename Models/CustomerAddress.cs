@@ -1,6 +1,6 @@
 ﻿namespace Resturant_RES_API_ITI_PRJ.Models
 {
-    public class CustomerAddresses
+    public class CustomerAddress
     {
         public int CustAddressId { get; set; }
 
