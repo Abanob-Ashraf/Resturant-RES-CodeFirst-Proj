@@ -135,6 +135,7 @@ namespace Resturant_RES_API_ITI_PRJ.Models
 
                 entity.HasOne(e => e.EmployeeIdNavigation)
                     .WithMany(c => c.EmployeeAddresses)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasForeignKey(e => e.EmpId)
                     .HasConstraintName("FK_employeeAddress_employee");
             });
@@ -286,6 +287,8 @@ namespace Resturant_RES_API_ITI_PRJ.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_dishIngredient_ingredient");
             });
+
+
         }
     }
 }
