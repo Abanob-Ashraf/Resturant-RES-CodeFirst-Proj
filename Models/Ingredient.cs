@@ -2,9 +2,14 @@
 {
     public class Ingredient
     {
-        public int IngredientId { get; set; }
+        public Ingredient()
+        {
+            DishIngredientRels = new HashSet<DishIngredientRel>();
+        }
 
+        public int IngredientId { get; set; }
         public string IngredientName { get; set; }
 
+        public virtual ICollection<DishIngredientRel> DishIngredientRels { get; set; }
     }
 }

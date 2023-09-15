@@ -2,8 +2,14 @@
 {
     public class DishCategory
     {
-        public int DishCategoryId { get; set; }
+        public DishCategory()
+        {
+            Dishes = new HashSet<Dish>();
+        }
 
+        public int DishCategoryId { get; set; }
         public string DishCategoryName { get; set; }
+
+        public virtual ICollection<Dish> Dishes { get; set; }
     }
 }
