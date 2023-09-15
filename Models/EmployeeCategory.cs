@@ -2,7 +2,14 @@
 {
     public class EmployeeCategory
     {
-        public int Id { get; set; }
-        public string CategoryName { get; set;}
+        public EmployeeCategory()
+        {
+            Employees = new HashSet<Employee>();
+        }
+
+        public int CategoryId { get; set; }
+        public string CategoryName { get; set; }
+
+        public virtual ICollection<Employee> Employees { get; set; }
     }
 }
