@@ -9,16 +9,22 @@ namespace Resturant_RES_API_ITI_PRJ.Models
         {
 
         }
-        // Client
-        
-        //Management
+
+        // Management
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeeAddress> EmployeeAddresses { get; set; }
         public DbSet<EmployeeCategory> EmployeeCategories { get; set; }
         public DbSet<Franchise> Franchises { get; set; }
 
+        // Dish
+        public DbSet<Dish> Dishes { get; set; }
+        public DbSet<DishCategory> DishCategories { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<DishIngredientRel> DishIngredientRels { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Management
             modelBuilder.Entity<Employee>(entity =>
             {
                 entity.HasKey(e => e.EmpId);
@@ -161,7 +167,7 @@ namespace Resturant_RES_API_ITI_PRJ.Models
                     .HasComment("الدوله");
 
                 entity.Property(e => e.ManagerId)
-                    .IsRequired(false) 
+                    .IsRequired(false)
                     .IsUnicode(false)
                     .HasComment("كود المدير");
 
@@ -186,6 +192,99 @@ namespace Resturant_RES_API_ITI_PRJ.Models
                     .IsRequired(true)
                     .IsUnicode(false)
                     .HasComment("اسم الوظيفه");
+            });
+
+            // Dish
+            modelBuilder.Entity<Dish>(entity =>
+            {
+                entity.HasKey(e => e.DishId);
+
+                entity.ToTable("dish", "dish");
+
+                entity.Property(e => e.DishId)
+                    .HasComment("كود الطبق");
+
+                entity.Property(e => e.DishName)
+                    .HasMaxLength(50)
+                    .IsRequired(true)
+                    .IsUnicode(false)
+                    .HasComment("اسم الطبق");
+
+                entity.Property(e => e.DishPrice)
+                    .HasMaxLength(50)
+                    .IsRequired(true)
+                    .IsUnicode(false)
+                    .HasComment("سعر الطبق");
+
+                entity.Property(e => e.DishImageName)
+                    .HasColumnType("varchar(max)")
+                    .IsRequired(true)
+                    .IsUnicode(false)
+                    .HasComment("صوره الطبق");
+
+                entity.Property(e => e.DishCategoryId)
+                    .HasComment("كود التصنيف");
+
+                entity.HasOne(e => e.DishCategoryIdNavigation)
+                    .WithMany(c => c.Dishes)
+                    .HasForeignKey(e => e.DishCategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_dish_dishCategory");
+            });
+
+            modelBuilder.Entity<DishCategory>(entity =>
+            {
+                entity.HasKey(e => e.DishCategoryId);
+
+                entity.ToTable("dishCategory", "dish");
+
+                entity.Property(e => e.DishCategoryId)
+                    .HasComment("كود الصنف");
+
+                entity.Property(e => e.DishCategoryName)
+                    .HasMaxLength(50)
+                    .IsRequired(true)
+                    .IsUnicode(false)
+                    .HasComment("اسم الصنف");
+
+            });
+
+            modelBuilder.Entity<Ingredient>(entity =>
+            {
+                entity.HasKey(e => e.IngredientId);
+
+                entity.ToTable("ingredient", "dish");
+
+                entity.Property(e => e.IngredientId).HasComment("كود المكونات");
+
+                entity.Property(e => e.IngredientName)
+                    .HasMaxLength(50)
+                    .IsRequired(true)
+                    .IsUnicode(false)
+                    .HasComment("اسم المكونات");
+            });
+
+            modelBuilder.Entity<DishIngredientRel>(entity =>
+            {
+                entity.HasKey(e => e.DishIngredientRelId);
+
+                entity.ToTable("dishIngredient", "dish");
+
+                entity.Property(e => e.DishIngredientRelId).HasComment("كود الطبق و المكون");
+
+                entity.Property(e => e.DishId).HasComment("كود الطبق");
+
+                entity.Property(e => e.IngredientId).HasComment("كود المكون");
+
+                entity.HasOne(e => e.DishIdNavigation)
+                    .WithMany(c => c.DishIngredientRels)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_dishIngredient_dish");
+                
+                entity.HasOne(e => e.IngredientIdNavigation)
+                    .WithMany(c => c.DishIngredientRels)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_dishIngredient_ingredient");
             });
         }
     }
