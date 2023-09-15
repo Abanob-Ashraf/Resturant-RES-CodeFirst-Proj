@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Resturant_RES_API_ITI_PRJ.Models;
+
 namespace Resturant_RES_API_ITI_PRJ
 {
     public class Program
@@ -9,6 +12,9 @@ namespace Resturant_RES_API_ITI_PRJ
             // Add services to the container.
 
             builder.Services.AddControllers();
+
+            builder.Services.AddDbContext<ResturantContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
