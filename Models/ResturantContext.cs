@@ -9,7 +9,8 @@ namespace Resturant_RES_API_ITI_PRJ.Models
         {
 
         }
-
+        // Client
+        
         //Management
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeeAddress> EmployeeAddresses { get; set; }
@@ -23,6 +24,8 @@ namespace Resturant_RES_API_ITI_PRJ.Models
                 entity.HasKey(e => e.EmpId);
 
                 entity.ToTable("employee", "manage");
+
+                entity.Property(e => e.EmpId).HasComment("كود الموظف");
 
                 entity.Property(e => e.EmpFirstName)
                     .HasMaxLength(50)
@@ -40,8 +43,7 @@ namespace Resturant_RES_API_ITI_PRJ.Models
                     .HasMaxLength(50)
                     .IsRequired(true)
                     .IsUnicode(false)
-                    .HasComment("البريد الاليكتروني");
-
+                    .HasComment("البريد الالكتروني");
 
                 entity.Property(e => e.EmpPassword)
                     .HasMaxLength(50)
@@ -61,10 +63,19 @@ namespace Resturant_RES_API_ITI_PRJ.Models
                     .IsUnicode(false)
                     .HasComment("الرقم القومي");
 
-                entity.Property(e => e.EmpHirigDate).HasColumnType("datetime2").HasComment("تاريخ التعيين");
+                entity.Property(e => e.EmpHirigDate)
+                    .HasColumnType("datetime2")
+                    .HasComment("تاريخ التعيين");
 
+                entity.Property(e => e.EmpSalary)
+                    .HasColumnType("decimal")
+                    .HasComment("المرتب");
 
-                entity.Property(e => e.EmpSalary).HasColumnType("decimal").HasComment("المرتب");
+                entity.Property(e => e.FranchiseId)
+                    .HasComment("كود الفرع");
+
+                entity.Property(e => e.EmpCategoryId)
+                    .HasComment("كود الوظيفه");
 
                 entity.HasIndex(e => e.EmpEmail).IsUnique(true);
 
@@ -98,15 +109,23 @@ namespace Resturant_RES_API_ITI_PRJ.Models
 
                 entity.ToTable("employeeAddress", "manage");
 
+                entity.Property(e => e.EmployeeAddressId)
+                    .HasComment("كود العنوان");
+
                 entity.Property(e => e.City)
                     .HasMaxLength(50)
                     .IsRequired(true)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasComment("المدينه");
 
                 entity.Property(e => e.Country)
                     .HasMaxLength(50)
                     .IsRequired(true)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasComment("الدوله");
+
+                entity.Property(e => e.EmpId)
+                    .HasComment("كود الموظف");
 
                 entity.HasOne(e => e.EmployeeIdNavigation)
                     .WithMany(c => c.EmployeeAddresses)
@@ -120,30 +139,36 @@ namespace Resturant_RES_API_ITI_PRJ.Models
 
                 entity.ToTable("franchise", "manage");
 
+                entity.Property(e => e.FranchiseId)
+                    .HasComment("كود الفرع");
+
                 entity.Property(e => e.Street)
                     .HasMaxLength(50)
                     .IsRequired(true)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasComment("الشارع");
 
                 entity.Property(e => e.City)
                     .HasMaxLength(50)
                     .IsRequired(true)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasComment("المدينه");
 
                 entity.Property(e => e.Country)
                     .HasMaxLength(50)
                     .IsRequired(true)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasComment("الدوله");
 
                 entity.Property(e => e.ManagerId)
                     .IsRequired(false) 
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasComment("كود المدير");
 
                 entity.HasOne(e => e.ManagerIdNavigation)
                     .WithMany(c => c.Franchises)
                     .HasForeignKey(e => e.ManagerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-
                     .HasConstraintName("FK_franchise_manager");
             });
 
@@ -153,10 +178,14 @@ namespace Resturant_RES_API_ITI_PRJ.Models
 
                 entity.ToTable("employeeCategory", "manage");
 
+                entity.Property(e => e.CategoryId)
+                    .HasComment("كود الوظيفه");
+
                 entity.Property(e => e.CategoryName)
                     .HasMaxLength(50)
                     .IsRequired(true)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasComment("اسم الوظيفه");
             });
         }
     }
