@@ -5,6 +5,7 @@
         public Franchise()
         {
             Employees = new HashSet<Employee>();
+            Orders = new HashSet<Order>();
         }
 
         public int FranchiseId { get; set; }
@@ -15,5 +16,6 @@
         public Employee? ManagerIdNavigation { get; set; }
 
         public virtual ICollection<Employee> Employees { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }
