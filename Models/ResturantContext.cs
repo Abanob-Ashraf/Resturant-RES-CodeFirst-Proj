@@ -29,6 +29,12 @@ namespace Resturant_RES_API_ITI_PRJ.Models
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<OrderDishesRel> OrderDishesRels { get; set; }
 
+        // Clint
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<CustomerAddress> CustomerAddresses { get; set; }
+        public DbSet<Testimonial> Testimonials { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Management
@@ -328,7 +334,7 @@ namespace Resturant_RES_API_ITI_PRJ.Models
 
                 entity.Property(e => e.IsPaid)
                     .IsRequired(true)
-                    .HasDefaultValueSql("0")
+                    //.HasDefaultValueSql("0")
                     .HasComment("هل تم الدفع؟");
 
                 entity.Property(e => e.OrderDate)
@@ -476,6 +482,167 @@ namespace Resturant_RES_API_ITI_PRJ.Models
                     .HasForeignKey(e => e.DishId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_orderDishesRel_dish");
+            });
+
+            // Clint
+            modelBuilder.Entity<Customer>(entity =>
+            {
+                entity.HasKey(e => e.CustomerId);
+
+                entity.ToTable("customer", "clint");
+
+                entity.Property(e => e.CustomerId)
+                    .IsRequired(true)
+                    .HasComment("كود العميل");
+
+                entity.Property(e => e.CustomerFirstName)
+                    .HasMaxLength(50)
+                    .IsRequired(true)
+                    .IsUnicode(false)
+                    .HasComment("الاسم الاول");
+
+                entity.Property(e => e.CustomerLastName)
+                    .HasMaxLength(50)
+                    .IsRequired(true)
+                    .IsUnicode(false)
+                    .HasComment("الاسم الثاني");
+
+                entity.Property(e => e.CustomerEmail)
+                    .HasMaxLength(50)
+                    .IsRequired(true)
+                    .IsUnicode(false)
+                    .HasComment("البريد الالكتروني");
+
+                entity.Property(e => e.CustomerPassword)
+                    .HasMaxLength(50)
+                    .IsRequired(false)
+                    .IsUnicode(true)
+                    .HasComment("كلمه السر");
+
+                entity.Property(e => e.CustomerPhone)
+                    .HasMaxLength(11)
+                    .IsRequired(false)
+                    .IsUnicode(false)
+                    .HasComment("رقم التيلفون");
+
+                entity.HasIndex(e => e.CustomerEmail).IsUnique(true);
+
+                entity.HasIndex(e => e.CustomerPhone).IsUnique(true);
+            });
+
+            modelBuilder.Entity<CustomerAddress>(entity =>
+            {
+                entity.HasKey(e => e.CustomerAddressId);
+
+                entity.ToTable("customerAddress", "clint");
+
+                entity.Property(e => e.CustomerAddressId)
+                    .HasComment("كود العنوان");
+
+                entity.Property(e => e.City)
+                    .HasMaxLength(50)
+                    .IsRequired(true)
+                    .IsUnicode(false)
+                    .HasComment("المدينه");
+
+                entity.Property(e => e.Country)
+                    .HasMaxLength(50)
+                    .IsRequired(true)
+                    .IsUnicode(false)
+                    //.HasDefaultValueSql("'Egypt'")
+                    .HasComment("الدوله");
+
+                entity.Property(e => e.CustomerId)
+                    .IsRequired(true)
+                    .HasComment("كود العميل");
+
+                entity.HasOne(e => e.CustomerIdNavigation)
+                    .WithMany(c => c.CustomerAddresses)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasForeignKey(e => e.CustomerId)
+                    .HasConstraintName("FK_customerAddress_customer");
+            });
+
+            modelBuilder.Entity<Testimonial>(entity =>
+            {
+                entity.HasKey(e => e.TestimonialID);
+
+                entity.ToTable("testimonial", "clint");
+
+                entity.Property(e => e.TestimonialID)
+                    .IsRequired(true)
+                    .HasComment("كود التعليق");
+
+                entity.Property(e => e.TestimonialText)
+                    .HasColumnType("varchar(max)")
+                    .IsRequired(true)
+                    .IsUnicode(false)
+                    .HasComment("التعليق");
+
+                entity.Property(e => e.ShownInWebsite)
+                    .IsRequired(true)
+                    //.HasDefaultValueSql("0")
+                    .HasComment("ظهور علي الموقع");
+
+                entity.Property(e => e.CustomerId)
+                    .IsRequired(false)
+                    .HasComment("كود العميل");
+
+                entity.HasOne(e => e.CustomerIdNavigation)
+                    .WithMany(c => c.Testimonials)
+                    .OnDelete(DeleteBehavior.SetNull)
+                    .HasForeignKey(e => e.CustomerId)
+                    .HasConstraintName("FK_testimonial_customer");
+            });
+
+            modelBuilder.Entity<Reservation>(entity =>
+            {
+                entity.HasKey(e => e.ReservationId);
+
+                entity.ToTable("reservation", "clint");
+
+                entity.Property(e => e.ReservationId)
+                    .IsRequired(true)
+                    .HasComment("كود الحجز");
+
+                entity.Property(e => e.Note)
+                    .HasColumnType("varchar(max)")
+                    .IsRequired(false)
+                    .HasComment("ملاحظات العميل");
+
+                entity.Property(e => e.NoOfGuests)
+                    .IsRequired(true)
+                    .IsUnicode(false)
+                    .HasComment("عدد الافراد");
+
+                entity.Property(e => e.ReservarionDate)
+                    .HasDefaultValueSql("GETDATE()")
+                    .IsRequired(true)
+                    .HasComment("تاريخ الحجز");
+
+                entity.Property(e => e.CustomerId)
+                    .IsRequired(true)
+                    .HasComment("كود العميل");
+
+                entity.Property(e => e.CustomerId)
+                    .IsRequired(true)
+                    .HasComment("كود العميل");
+
+                entity.Property(e => e.FranchiseId)
+                    .IsRequired(true)
+                    .HasComment("كود الفرع");
+
+                entity.HasOne(e => e.CustomerIdNavigation)
+                    .WithMany(c => c.Reservations)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasForeignKey(e => e.CustomerId)
+                    .HasConstraintName("FK_reservation_customer");
+
+                entity.HasOne(e => e.FranchiseIdNavigation)
+                    .WithMany(c => c.Reservations)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasForeignKey(e => e.FranchiseId)
+                    .HasConstraintName("FK_reservation_franchise");
             });
         }
     }
