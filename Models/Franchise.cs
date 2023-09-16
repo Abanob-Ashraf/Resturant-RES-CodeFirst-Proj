@@ -6,6 +6,7 @@
         {
             Employees = new HashSet<Employee>();
             Orders = new HashSet<Order>();
+            Reservations = new HashSet<Reservation>();
         }
 
         public int FranchiseId { get; set; }
@@ -17,5 +18,6 @@
 
         public virtual ICollection<Employee> Employees { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Reservation> Reservations { get; set; }
     }
 }

@@ -2,17 +2,14 @@
 {
     public class CustomerAddress
     {
-        public int CustAddressId { get; set; }
+        public int CustomerAddressId { get; set; }
+        public string? BuildingNum { get; set; }
+        public string Street { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }
+        public string? PostalCode { get; set; }
+        public int CustomerId { get; set; }
 
-        public string? CustAddressBuildingNumber { get; set; }
-
-        public string CustAddressStreet { get; set; }
-
-        public string CustAddressCity { get; set; }
-
-        public string CustAddressCountry { get; set; }
-
-        public string? CustAddressPostalCode { get; set; }
-
+        public virtual Customer? CustomerIdNavigation { get; set; }
     }
 }

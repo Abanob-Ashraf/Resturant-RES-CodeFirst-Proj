@@ -4,6 +4,9 @@
     {
         public int TestimonialID { get; set; }
         public string TestimonialText { get; set; }
-        public bool ShownInWebsite { get; set; } = false;
+        public bool ShownInWebsite { get; set; }
+        public int? CustomerId { get; set; }
+
+        public virtual Customer? CustomerIdNavigation { get; set; }
     }
 }
