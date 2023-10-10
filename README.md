@@ -1,2 +1,2 @@
-# Resturant-RES-API-ITI-PRJ
+# Resturant-RES-CodeFirst-Proj
 Web API Project
