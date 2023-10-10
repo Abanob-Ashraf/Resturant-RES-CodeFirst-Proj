@@ -1,2 +1,2 @@
 # Resturant-RES-CodeFirst-Proj
-Web API Project
+Database structured by Fluent Api
